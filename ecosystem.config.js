@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: "twitterDuBled",
-    script: "./bin/WWW",
+    script: "./bin/www",
     instances: 'max',
     autorestart: true,
     watch: true,
