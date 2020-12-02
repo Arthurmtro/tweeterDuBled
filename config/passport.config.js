@@ -1,4 +1,4 @@
-const { app } = require('../app');
+const app = require('../app');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const { findUserPerEmail, findUserPerId } = require('../queries/users.queries');
@@ -10,11 +10,11 @@ passport.serializeUser((user, done) => {
     done(null, user._id);
 })
 
-passport.deserializeUser( async (id, done) => {
+passport.deserializeUser(async (id, done) => {
     try {
         const user = await findUserPerId(id);
         done(null, user);
-    } catch(e) {
+    } catch (e) {
         done(e);
     }
 })
@@ -34,7 +34,7 @@ passport.use('local', new LocalStrategy({
         } else {
             done(null, false, { message: 'L\'utilisateur n\'existe pas' })
         }
-    } catch(e) {
+    } catch (e) {
         done(e);
     }
 }));

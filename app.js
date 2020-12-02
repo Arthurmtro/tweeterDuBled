@@ -6,8 +6,7 @@ const index = require('./routes/index');
 require('./database');
 
 const app = express();
-exports.app = app;
-const port = process.env.PORT || 3000;
+module.exports = app;
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -18,13 +17,13 @@ require('./config/passport.config');
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(index);
 
 if (process.env.NODE_ENV === 'dev') {
     app.use(errorHandler());
-}else {
+} else {
     app.use((err, req, res, next) => {
         const code = err.code || 500;
         res.status(code).json({
@@ -33,5 +32,3 @@ if (process.env.NODE_ENV === 'dev') {
         })
     })
 }
-
-app.listen(port);
