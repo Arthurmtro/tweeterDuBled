@@ -1,14 +1,36 @@
-const { createUser } = require('../queries/users.queries');
+const { createUser, findUserPerUsername } = require('../queries/users.queries');
+const { getUserTweetsFromAuthorId } = require('../queries/tweets.queries');
 const path = require('path');
 const multer = require('multer');
-const upload = multer({ storage: multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join( __dirname, '../public/images/avatars'))
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${ Date.now() }-${ file.originalname }`);
+const { getTweets } = require('../queries/tweets.queries');
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, '../public/images/avatars'))
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    }
+  })
+})
+
+exports.userProfile = async (req, res, next) => {
+  try {
+    const username = req.params.username;
+    const user = await findUserPerUsername(username);
+    const tweets = await getUserTweetsFromAuthorId(user._id);
+    res.render('tweets/tweet', {
+      tweets,
+      isAuthenticated: req.isAuthenticated(),
+      currentUser: req.user,
+      user,
+      editable: false
+    });
+
+  } catch (e) {
+    next(e);
   }
-}) })
+}
 
 exports.signupForm = (req, res, next) => {
   res.render('users/user-form', { errors: null, isAuthenticated: req.isAuthenticated(), currentUser: req.user });
@@ -19,20 +41,20 @@ exports.signup = async (req, res, next) => {
   try {
     const user = await createUser(body);
     res.redirect('/');
-  } catch(e) {
-    res.render('users/user-form', { errors: [ e.message ], isAuthenticated: req.isAuthenticated(), currentUser: req.user });
+  } catch (e) {
+    res.render('users/user-form', { errors: [e.message], isAuthenticated: req.isAuthenticated(), currentUser: req.user });
   }
 }
 
-exports.uploadImage = [ 
+exports.uploadImage = [
   upload.single('avatar'),
   async (req, res, next) => {
     try {
       const user = req.user;
-      user.avatar = `/images/avatars/${ req.file.filename }`;
+      user.avatar = `/images/avatars/${req.file.filename}`;
       await user.save();
       res.redirect('/');
-    } catch(e) {
+    } catch (e) {
       next(e);
     }
   }
