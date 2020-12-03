@@ -60,6 +60,33 @@ body {
   color: #657786;
 }
 
+.img-fluid {
+  max-height: 100px;
+}
+
+.b {
+  border: 1px solid red;
+}
+
+.btn-follow {
+  color: #007bff;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  border-width: 2px
+}
+
+.btn-follow:hover {
+  color: white !important;
+}
+
+.btn-unfollow {
+  color: white;
+  border-radius: 30px;
+  font-weight: bold;
+}
+
+
 @media screen and (max-width: 800px) {
   .profile-container {
     display: block;
@@ -89,30 +116,4 @@ body {
   .card {
     width: 100vw !important;
   }
-}
-
-.img-fluid {
-  max-height: 100px;
-}
-
-.b {
-  border: 1px solid red;
-}
-
-.btn-follow {
-  color: #007bff;
-  border-radius: 30px;
-  font-weight: bold;
-  cursor: pointer;
-  border-width: 2px
-}
-
-.btn-follow:hover {
-  color: white !important;
-}
-
-.btn-unfollow {
-  color: white;
-  border-radius: 30px;
-  font-weight: bold;
 }
