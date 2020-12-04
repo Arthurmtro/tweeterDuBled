@@ -6,10 +6,10 @@ module.exports = {
     autorestart: true,
     watch: true,
     env: {
-      NODE_ENV: 'development'
+      NODE_ENV: 'dev'
     },
     env_production: {
-      NODE_ENV: 'production'
+      NODE_ENV: 'prod'
     }
   }],
 };
