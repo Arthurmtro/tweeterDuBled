@@ -50,7 +50,11 @@ exports.signup = async (req, res, next) => {
   const body = req.body;
   try {
     const user = await createUser(body);
-    res.redirect('/');
+    req.login(user, (err) => {
+      if (err) { next(err) } else {
+        res.redirect('/');
+      }
+    });
   } catch (e) {
     res.render('users/user-form', { errors: [e.message], isAuthenticated: req.isAuthenticated(), currentUser: req.user });
   }
